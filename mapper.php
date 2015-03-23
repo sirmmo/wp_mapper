@@ -82,13 +82,14 @@ function your_prefix_register_meta_boxes( $meta_boxes )
 
 
 
-//[map bg="SpaceStationEarth" height="500px" center="45.4671,9.1646" cat="storie"]
+//[map bg="SpaceStationEarth" height="500px" center="45.4671,9.1646" cat="storie" scroll=false]
 function map_func( $ratts ){
 	$atts = shortcode_atts(
 		array(
 			"cat"=>"storie",
 			"center" => "45.4671,9.1646",
-			"height" => "500px"
+			"height" => "500px",
+			"scroll"=>false,
 		), $ratts);
 	wp_enqueue_script("mbljs", 'https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.js');
 	wp_enqueue_style("mbls", "https://api.tiles.mapbox.com/mapbox.js/v2.1.6/mapbox.css");
@@ -110,7 +111,7 @@ function map_func( $ratts ){
 		var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.3hqcl3di/{z}/{x}/{y}.png?access_token=' + L.mapbox.accessToken, {
 	    	attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
 		});
-		var map = L.map('map')
+		var map = L.map('map', {"scrollWheelZoom":<?php echo json_encode($atts["scroll"]);?>})
 		    .addLayer(mapboxTiles)
 		    .setView(<?php echo json_encode(explode(",", $atts["center"]));?>, 15);
 
